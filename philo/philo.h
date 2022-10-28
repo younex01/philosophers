@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yelousse <yelousse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mzarhou <mzarhou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 05:31:00 by yelousse          #+#    #+#             */
-/*   Updated: 2022/08/28 15:04:11 by yelousse         ###   ########.fr       */
+/*   Updated: 2022/10/28 18:35:31 by mzarhou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ typedef struct s_data_g
 	int				nb_of_times_each_philo_must_eat;
 	pthread_mutex_t	print_mutex;
 	int				ac;
+    int             print_check;
+	long long		time;
 }t_data_g;
 
 typedef struct s_philo
@@ -39,15 +41,14 @@ typedef struct s_philo
 	int				index;
 	int				timestamp_in_ms;
 	t_data_g		*data;
-	long long		time;
-}t_philo;
+}   t_philo;
 
 void		link_forks(t_philo *philo);
 int			ft_atoi(char *str);
 void		*routine(void *philo);
 long long	get_time(void);
 void		ft_usleep(unsigned long time);
-void		ft_print(const char *s, long long time, int i, pthread_mutex_t m);
+void	    ft_print(const char *s, long long time, int i, t_philo *ph);
 void		ft_destroy_mutex(t_philo *philo);
 int			taking_forks(t_philo *p);
 void		ft_error(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yelousse <yelousse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mzarhou <mzarhou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 05:30:46 by yelousse          #+#    #+#             */
-/*   Updated: 2022/08/28 05:48:00 by yelousse         ###   ########.fr       */
+/*   Updated: 2022/10/28 18:38:06 by mzarhou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ int	if_is_die(t_philo *p)
 		if (get_time() - p[i].last_eating_time > p[i].data->time_to_die)
 		{
 			pthread_mutex_lock(&p[i].data->print_mutex);
+            p->data->print_check = 1;
 			printf("%lld ms %d is died\n",
-				get_time() - p[i].time, p[i].index + 1);
+				get_time() - p->data->time, p[i].index + 1);
 			return (0);
 		}
 	}

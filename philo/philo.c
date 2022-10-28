@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yelousse <yelousse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mzarhou <mzarhou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 21:00:22 by yelousse          #+#    #+#             */
-/*   Updated: 2022/08/28 15:06:35 by yelousse         ###   ########.fr       */
+/*   Updated: 2022/10/28 18:51:16 by mzarhou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	philo_init(t_philo *philo, t_data_g *data_g)
 
 	i = 0;
 	pthread_mutex_init(&data_g->print_mutex, NULL);
+    data_g->print_check = 0;
+    data_g->time = get_time();
 	while (i < data_g->nb_of_philo)
 	{
 		pthread_mutex_init(&philo[i].fork, NULL);
@@ -25,7 +27,6 @@ void	philo_init(t_philo *philo, t_data_g *data_g)
 		philo[i].next_fork = NULL;
 		philo[i].index = i;
 		philo[i].data = data_g;
-		philo[i].time = get_time();
 		philo[i].last_eating_time = get_time();
 		i++;
 	}
@@ -36,25 +37,22 @@ void	*philo_routine(void *philo)
 	t_philo	*p;
 
 	p = (t_philo *)philo;
+    if (p->index % 2)
+        usleep(50);
 	while (1)
 	{
-		if (p->index % 2)
-			usleep(50);
 		if (!taking_forks(p))
 			break ;
 		p->last_eating_time = get_time();
-		ft_print("is eating", get_time() - p->time,
-			p->index + 1, p->data->print_mutex);
+		ft_print("is eating", get_time() - p->data->time,
+			p->index + 1, p);
 		p->nbr_eating++;
 		ft_usleep(p->data->time_to_eat);
 		pthread_mutex_unlock(&p->fork);
 		pthread_mutex_unlock(p->next_fork);
-		ft_print("is sleeping", get_time() - p->time,
-			p->index + 1, p->data->print_mutex);
+		ft_print("is sleeping", get_time() - p->data->time, p->index + 1, p);
 		ft_usleep(p->data->time_to_sleep);
-		ft_print("is thinking", get_time() - p->time,
-			p->index + 1, p->data->print_mutex);
-		usleep(50);
+		ft_print("is thinking", get_time() - p->data->time, p->index + 1, p);
 	}
 	return (NULL);
 }
